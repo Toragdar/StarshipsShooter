@@ -240,7 +240,7 @@ GameObject:
   - component: {fileID: 684687279}
   m_Layer: 0
   m_Name: EnemySpawner
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -273,7 +273,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actorModel: {fileID: 11400000, guid: 6aa48fe29cfa2bb46b694443383e08d4, type: 2}
   spawnRate: 2
-  quantity: 4
+  quantity: 10
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -380,7 +380,7 @@ GameObject:
   m_Layer: 0
   m_Name: PlayerSpawner
   m_TagString: Untagged
-  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
