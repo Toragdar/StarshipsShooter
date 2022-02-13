@@ -24,6 +24,7 @@ public class ScenesManager : MonoBehaviour
     }
     public void GameOver()
     {
+        Debug.Log("ENDSCORE : " + GameManager.Instance.GetComponent<ScoreManager>().PlayerScore);
         SceneManager.LoadScene("gameOver");
     }
 }

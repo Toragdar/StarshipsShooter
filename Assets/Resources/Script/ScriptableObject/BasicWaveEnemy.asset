@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actorName: enemy_wave
   attackType: 0
+  scores: 100
   description: Typically in groups
   health: 1
   speed: -50

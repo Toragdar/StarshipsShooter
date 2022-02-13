@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static int playerLives = 3;
     public static int currentScene = 0;
     public static int gameLevelScene = 3;
 
@@ -25,10 +26,19 @@ public class GameManager : MonoBehaviour
         currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
         LightAndCameraSetup(currentScene);
     }
-
-    void Start()
+    public void LifeLost()
     {
-        
+        if (playerLives > 1)
+        {
+            playerLives--;
+            Debug.Log("Lives left: " + playerLives);
+            GetComponent<ScenesManager>().ResetScene();
+        }
+        else
+        {
+            playerLives = 3;
+            GetComponent<ScenesManager>().GameOver();
+        }
     }
 
     void CheckGameManagerIsInScene()

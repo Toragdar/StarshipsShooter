@@ -80,6 +80,7 @@ public class Player : MonoBehaviour, IActorTemplate
     public void Die()
     {
         Destroy(gameObject);
+        GameManager.Instance.LifeLost();
     }
     void Movement()
     {

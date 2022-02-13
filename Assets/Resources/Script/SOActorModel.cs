@@ -11,6 +11,7 @@ public class SOActorModel : ScriptableObject
     {
         wave, player, flee, bullet
     }
+    public int scores;
     public string description;
     public int health;
     public int speed;
