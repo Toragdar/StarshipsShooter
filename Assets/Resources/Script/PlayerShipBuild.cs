@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+using UnityEngine.Advertisements;
 
 public class PlayerShipBuild : MonoBehaviour
 {
@@ -12,8 +14,11 @@ public class PlayerShipBuild : MonoBehaviour
     GameObject playerShip;
     GameObject buyButton;
     GameObject bankObject;
-    int bank = 600;
+    int bank = 2000;
     bool purchaseMade = false;
+
+    string placementId_rewardedvideo = "rewardedVideo";
+    string gameId = "1234567";
 
     void Start()
     {
@@ -73,13 +78,45 @@ public class PlayerShipBuild : MonoBehaviour
                         //canot afford
                         LackOfCredits();
                     }
-                    else if(target.transform.Find("itemText").GetComponent<TextMesh>().text == "SOLD")
+                    else if (target.transform.Find("itemText").GetComponent<TextMesh>().text == "SOLD")
                     {
                         SoldOut();
-                    }
-                }                
+                    }                    
+                }
+                else if (target.name == "WATCH AD")
+                {
+                    //watchAd
+                }
+                else if (target.name == "BUY ?")
+                {
+                    BuyItem();
+                }
+                else if (target.name == "START")
+                {
+                    StartGame();
+                }
             }
         }
+    }
+    void BuyItem()
+    {
+        Debug.Log("PURCHASED");
+        purchaseMade = true;
+        buyButton.SetActive(false);
+        tmpSelection.SetActive(false);
+
+        for (int i = 0; i < visualWeapons.Length; i++)
+        {
+            if (visualWeapons[i].name == tmpSelection.transform.parent.gameObject.GetComponent<ShopPiece>().ShopSelection.iconName)
+            {
+                visualWeapons[i].SetActive(true);
+            }
+        }
+
+        UpgradeToShip(tmpSelection.transform.parent.gameObject.GetComponent<ShopPiece>().ShopSelection.iconName);
+        bank = bank - System.Int32.Parse(tmpSelection.transform.parent.GetComponent<ShopPiece>().ShopSelection.cost);
+        bankObject.transform.Find("bankText").GetComponent<TextMesh>().text = bank.ToString();
+        tmpSelection.transform.parent.transform.Find("itemText").GetComponent<TextMesh>().text = "SOLD";
     }
     void Affordable()
     {
@@ -123,5 +160,39 @@ public class PlayerShipBuild : MonoBehaviour
     {
         textBoxPanel.transform.Find("name").gameObject.GetComponent<TextMesh>().text = tmpSelection.GetComponentInParent<ShopPiece>().ShopSelection.iconName;
         textBoxPanel.transform.Find("desc").gameObject.GetComponent<TextMesh>().text = tmpSelection.GetComponentInParent<ShopPiece>().ShopSelection.description;
+    }
+    void UpgradeToShip(string upgrade)
+    {
+        GameObject shipItem = GameObject.Instantiate(Resources.Load("Prefab/Player/" + upgrade)) as GameObject;
+        shipItem.transform.SetParent(playerShip.transform);
+        shipItem.transform.localPosition = Vector3.zero;
+    }
+    void StartGame()
+    {
+        if (purchaseMade)
+        {
+            playerShip.name = "UpgradedShip";
+            if (playerShip.transform.Find("energy +1(Clone)"))
+            {
+                playerShip.GetComponent<Player>().Health = 2;
+            }
+            DontDestroyOnLoad(playerShip);
+        }
+        UnityEngine.SceneManagement.SceneManager.LoadScene("testLevel");
+    }
+    void CheckPlatform()
+    {
+        if (Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            //«¿Ã≈Õ»“‹ ¿…ƒ»
+            gameId = "REPLACE-THIS-TEXT-FOR-YOUR-IPHONE-GAMEID";
+        }
+        else if (Application.platform == RuntimePlatform.Android)
+        {
+            //«¿Ã≈Õ»“‹ ¿…ƒ»
+            gameId = "REPLACE-THIS-TEXT-FOR-YOUR-ANDROID-GAMEID";
+        }
+        //¬ÍÎ˛˜ÂÌ ÚÂÒÚÓ‚˚È ÂÊËÏ ÂÍÎ‡Ï˚
+        Advertisement.Initialize(gameId, true);
     }
 }
