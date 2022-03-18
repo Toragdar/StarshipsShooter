@@ -14,7 +14,7 @@ public class PlayerShipBuild : MonoBehaviour
     GameObject playerShip;
     GameObject buyButton;
     GameObject bankObject;
-    int bank = 600;
+    int bank = 2000;
     bool purchaseMade = false;
 
     string placementId_rewardedvideo = "rewardedVideo";
