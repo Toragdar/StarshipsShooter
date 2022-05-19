@@ -26,6 +26,10 @@ public class GameManager : MonoBehaviour
         currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
         LightAndCameraSetup(currentScene);
     }
+    private void Start()
+    {
+        SetLivesDisplay(playerLives);
+    }
     public void LifeLost()
     {
         if (playerLives > 1)
@@ -87,5 +91,31 @@ public class GameManager : MonoBehaviour
 
         dirLight.transform.eulerAngles = new Vector3(50, -30, 0);
         dirLight.GetComponent<Light>().color = new Color32(152, 204, 255, 255);
+    }
+    public void SetLivesDisplay(int players)
+    {
+        if (GameObject.Find("lives"))
+        {
+            GameObject lives = GameObject.Find("lives");
+
+            if (lives.transform.childCount < 1)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    GameObject life = GameObject.Instantiate(Resources.Load("Prefab/life")) as GameObject;
+                    life.transform.SetParent(lives.transform);
+                }
+            }
+            //set visual lives
+            for (int i = 0; i < lives.transform.childCount; i++)
+            {
+                lives.transform.GetChild(i).localScale = new Vector3(1, 1, 1);
+            }
+            //remove visual lives
+            for (int i = 0; i < (lives.transform.childCount - players); i++)
+            {
+                lives.transform.GetChild(lives.transform.childCount - i - 1).localScale = Vector3.zero;
+            }
+        }        
     }
 }

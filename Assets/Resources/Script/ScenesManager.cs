@@ -19,6 +19,10 @@ public class ScenesManager : MonoBehaviour
         level3,
         gameOver
     }
+    private void Start()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
     void Update()
     {
         if (currentSceneNumber !=
@@ -28,6 +32,10 @@ public class ScenesManager : MonoBehaviour
             GetScene();
         }
         GameTimer();
+    }
+    private void OnSceneLoaded(Scene aScene, LoadSceneMode aMode)
+    {
+        GetComponent<GameManager>().SetLivesDisplay(GameManager.playerLives);
     }
     public void BeginGame(int gameLevel)
     {
