@@ -1,15 +1,23 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class PauseComponent : MonoBehaviour
 {
     [SerializeField] GameObject pauseScreen;
+    [SerializeField] AudioMixer masterMixer;
+    [SerializeField] GameObject musicSlider;
+    [SerializeField] GameObject effectsSlider;
 
     private void Awake()
     {
         pauseScreen.SetActive(false);
         SetPauseButtonActive(false);
         Invoke("DelayPauseAppear", 3.5f);
+        musicSlider.GetComponent<Slider>().value = GetMusicLevelFromMixer();
+        effectsSlider.GetComponent<Slider>().value = GetEffectsLevelFromMixer();
+        masterMixer.SetFloat("musicVol", PlayerPrefs.GetFloat("musicVolume"));
+        masterMixer.SetFloat("effectsVol", PlayerPrefs.GetFloat("effectsVolume"));
     }
     void SetPauseButtonActive(bool switchButton)
     {
@@ -54,5 +62,43 @@ public class PauseComponent : MonoBehaviour
         Time.timeScale = 1;
         GameManager.Instance.GetComponent<ScoreManager>().ResetScore();
         GameManager.Instance.GetComponent<ScenesManager>().BeginGame(0);
+    }
+    public void SetMusicLevelFromSlider()
+    {
+        masterMixer.SetFloat("musicVol", musicSlider.GetComponent<Slider>().value);
+        PlayerPrefs.SetFloat("musicVolume", musicSlider.GetComponent<Slider>().value);
+    }
+    public void SetEffectsLevelFromSlider()
+    {
+        masterMixer.SetFloat("effectsVol", effectsSlider.GetComponent<Slider>().value);
+        PlayerPrefs.SetFloat("effectsVolume", effectsSlider.GetComponent<Slider>().value);
+    }
+    float GetMusicLevelFromMixer()
+    {
+        float musicMixersValue;
+        bool result = masterMixer.GetFloat("musicVol", out musicMixersValue);
+
+        if (result)
+        {
+            return musicMixersValue;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    float GetEffectsLevelFromMixer()
+    {
+        float musicMixersValue;
+        bool result = masterMixer.GetFloat("effectsVol", out musicMixersValue);
+
+        if (result)
+        {
+            return musicMixersValue;
+        }
+        else
+        {
+            return 0;
+        }
     }
 }
