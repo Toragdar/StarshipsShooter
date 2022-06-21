@@ -126,6 +126,8 @@ public class ScenesManager : MonoBehaviour
                         {
                             GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTransition>().GameCompleted = true;
                         }
+
+                        SendInJsonFormat(SceneManager.GetActiveScene().name);
                         Invoke("NextLevel", 4);
                     }
                 }
@@ -144,5 +146,20 @@ public class ScenesManager : MonoBehaviour
         gameTimer = 0;
         SceneManager.LoadScene(GameManager.currentScene + 1);
         StartCoroutine(MusicVolume(MusicMode.musicOn));
+    }
+    void SendInJsonFormat(string lastLevel)
+    {
+        if (lastLevel == "level3")
+        {
+            GameStats gameStats = new GameStats();
+
+            gameStats.livesLeft = GameManager.playerLives;
+            gameStats.completed = System.DateTime.Now.ToString();
+            gameStats.score = ScoreManager.playerScore;
+
+            string json = JsonUtility.ToJson(gameStats, true);
+            Debug.Log(Application.persistentDataPath + "/GameStatsSaved.json");
+            System.IO.File.WriteAllText(Application.persistentDataPath + "/GameStatsSaved.json", json);
+        }
     }
 }
